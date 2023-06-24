@@ -1,0 +1,47 @@
+#include<iostream>
+
+using namespace std;
+
+class CyclicBuffer{
+public:
+void write(int number){
+
+    array[write_pointer] = number;
+    write_pointer = (write_pointer +1) % 10;
+
+    if(write_pointer == read_pointer){
+        read_pointer = (read_pointer + 1) % 10;
+    }
+}
+int read(){
+    if(write_pointer == read_pointer){
+        cout << "Buffer is full " << endl;
+    return -1;
+    }
+    int number = array[read_pointer];
+    read_pointer = (read_pointer +1) % 10;
+    return number;
+}
+
+private:
+int array[10];
+int read_pointer = 0;
+int write_pointer = 0;
+};
+
+int main(){
+
+    CyclicBuffer buffer;
+
+    buffer.write(1);
+    buffer.write(2);
+    buffer.write(3);
+    buffer.write(4);
+    buffer.write(5);
+
+    cout << buffer.read << endl;
+    
+
+return 0;
+
+}
