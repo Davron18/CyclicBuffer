@@ -1,0 +1,92 @@
+#include<iostream>
+
+using namespace std;
+class Node{
+public:
+Node(){}
+Node(int number){
+    this -> number = number;
+    this -> next_number = NULL;
+}
+int number;
+Node *next_number;
+
+int getVal(){
+    return number;
+}
+
+Node *getNextNode(){
+    
+    if(next_number != NULL){
+        
+        return next_number;
+    }
+    return NULL;
+}
+};
+
+
+class CyclicBuffer2{
+public:
+    CyclicBuffer2(Node init_value,int size){
+        this -> init_value = init_value;
+        this -> size = size;
+        this -> write_pointer = &init_value;
+        this -> read_pointer = &init_value;
+    }
+
+Node init_value;
+int size;
+Node *write_pointer ;
+Node *read_pointer ;
+
+void write(int value){
+
+    Node*new_node = new Node(value);
+    write_pointer->next_number = new_node;
+    write_pointer = new_node;
+    if(size > 0){
+        size --;
+    }
+}
+
+int read(){
+    if(size == 0){
+        return -1;
+    }
+    int val = read_pointer->getVal();
+    Node*read = read_pointer;
+    read_pointer = read_pointer->getNextNode();
+    delete read;
+    size ++;
+    if(read_pointer == NULL){
+        read_pointer = &init_value;
+    }
+    return val;
+}
+
+
+
+
+
+};
+
+int main(){
+    
+    Node node(1);
+    CyclicBuffer2 buffer(node,5);
+    buffer.write(1);
+    buffer.write(2);
+    buffer.write(3);
+    buffer.write(4);
+    
+    cout << buffer.read() << endl;
+    cout << buffer.read() << endl;
+    cout << buffer.read() << endl;
+    cout << buffer.read() << endl;
+    cout << buffer.read() << endl;
+    
+
+    
+    return 0;
+}
